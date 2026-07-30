@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description"
+        content="Sistema de Clientes Diarios: crea campañas en Meta Ads con Inteligencia Artificial para atraer clientes potenciales.">
+    <meta name="theme-color" content="#020611">
+    <title>Sistema de Clientes Diarios</title>
+    <style>
+        :root {
+            --bg: #020611;
+            --panel: #09162b;
+            --panel2: #10203d;
+            --text: #d9e3ef;
+            --muted: #91a1b8;
+            --blue: #1677ff;
+            --cyan: #22b8ff;
+            --yellow: #ffd326;
+            --orange: #ff9b1a;
+            --green: #35df77;
+            --red: #ff5252;
+            --line: rgba(255, 255, 255, .08);
+            --shadow: 0 30px 90px rgba(0, 0, 0, .58);
+            --max: 1220px
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            overflow-x: hidden;
+            color: #fff;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+            line-height: 1.62;
+            background: radial-gradient(circle at 88% 3%, rgba(22, 119, 255, .22), transparent 28rem), radial-gradient(circle at 6% 62%, rgba(255, 211, 38, .06), transparent 24rem), linear-gradient(180deg, #020611 0%, #071324 52%, #020611 100%)
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            opacity: .12;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(255, 255, 255, .028) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .028) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: linear-gradient(#000, transparent 90%)
+        }
+
+        img {
+            display: block;
+            max-width: 100%
+        }
+
+        a {
+            color: inherit
+        }
+
+        .container {
+            width: min(var(--max), calc(100% - 40px));
+            margin: auto
+        }
+
+        .section {
+            padding: 100px 0
+        }
+
+        .section-sm {
+            padding: 74px 0
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0
+        }
+
+        h1 {
+            max-width: 930px;
+            margin: 18px 0 22px;
+            font-size: clamp(3.1rem, 7vw, 6.9rem);
+            line-height: .9;
+            letter-spacing: -.072em
+        }
+
+        h2 {
+            margin-bottom: 18px;
+            font-size: clamp(2.2rem, 4.7vw, 4.8rem);
+            line-height: .98;
+            letter-spacing: -.052em
+        }
+
+        h3 {
+            font-size: clamp(1.18rem, 2vw, 1.55rem);
+            line-height: 1.16;
+            margin-bottom: 10px
+        }
+
+        p {
+            color: var(--text)
+        }
+
+        .lead {
+            max-width: 790px;
+            font-size: clamp(1.03rem, 1.65vw, 1.24rem);
+            line-height: 1.75
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        .gradient {
+            color: transparent;
+            background: linear-gradient(96deg, #fff 0%, #dce9ff 25%, var(--cyan) 53%, var(--blue) 73%, var(--yellow) 100%);
+            -webkit-background-clip: text;
+            background-clip: text
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 13px;
+            border: 1px solid rgba(255, 211, 38, .3);
+            border-radius: 999px;
+            background: rgba(255, 211, 38, .08);
+            color: var(--yellow);
+            font-size: .76rem;
+            font-weight: 950;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .eyebrow:before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--yellow);
+            box-shadow: 0 0 16px var(--yellow)
+        }
+
+        .btn {
+            min-height: 58px;
+            padding: 0 24px;
+            border: 1px solid transparent;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 950;
+            transition: .23s
+        }
+
+        .btn:hover {
+            transform: translateY(-3px)
+        }
+
+        .primary {
+            color: #071020;
+            background: linear-gradient(135deg, #fff18a, var(--yellow) 42%, var(--orange));
+            box-shadow: 0 18px 46px rgba(255, 211, 38, .26)
+        }
+
+        .secondary {
+            border-color: rgba(255, 255, 255, .13);
+            background: rgba(255, 255, 255, .05)
+        }
+
+        .small {
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 12px;
+            font-size: .9rem
+        }
+
+        .offerbar {
+            padding: 10px 16px;
+            text-align: center;
+            color: #071020;
+            background: linear-gradient(90deg, #ffcd16, #ffe76d, #ffad20);
+            font-size: .82rem;
+            font-weight: 1000;
+            letter-spacing: .04em
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 80;
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
+            background: rgba(2, 6, 17, .82);
+            backdrop-filter: blur(18px)
+        }
+
+        .navin {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+            font-weight: 950;
+            letter-spacing: -.04em
+        }
+
+        .brandmark {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(145deg, var(--blue), var(--cyan));
+            box-shadow: 0 0 30px rgba(22, 119, 255, .3)
+        }
+
+        .brand small {
+            display: block;
+            color: var(--yellow);
+            margin-top: -2px;
+            font-size: .62rem;
+            letter-spacing: .14em
+        }
+
+        .navlinks {
+            display: flex;
+            align-items: center;
+            gap: 24px
+        }
+
+        .navlinks>a:not(.btn) {
+            text-decoration: none;
+            color: #d9e2ef;
+            font-size: .91rem;
+            font-weight: 780
+        }
+
+        .navlinks>a:not(.btn):hover {
+            color: var(--yellow)
+        }
+
+        .menu {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .07);
+            color: #fff;
+            font-size: 1.3rem
+        }
+
+        .hero {
+            min-height: calc(100vh - 116px);
+            display: grid;
+            align-items: center;
+            padding: 72px 0 68px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero:before {
+            content: "";
+            position: absolute;
+            width: 780px;
+            height: 780px;
+            right: -280px;
+            top: -240px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(22, 119, 255, .22), transparent 68%)
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 46px;
+            align-items: center
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 13px;
+            margin: 30px 0 18px
+        }
+
+        .trust {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: #b7c4d7;
+            font-size: .88rem
+        }
+
+        .trust span:before {
+            content: "✓";
+            color: var(--yellow);
+            margin-right: 7px;
+            font-weight: 1000
+        }
+
+        .price-mini {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 24px;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 211, 38, .24);
+            border-radius: 16px;
+            background: rgba(7, 18, 36, .78)
+        }
+
+        .price-mini strong {
+            color: var(--yellow);
+            font-size: 1.72rem
+        }
+
+        .price-mini span {
+            color: #b7c4d7;
+            font-size: .82rem;
+            line-height: 1.25
+        }
+
+        .price-mini del {
+            color: #91a0b4;
+            text-decoration-color: var(--red);
+            text-decoration-thickness: 3px
+        }
+
+        .hero-art {
+            position: relative;
+            min-height: 650px;
+            perspective: 1200px
+        }
+
+        .mentor-frame {
+            position: absolute;
+            inset: 2% 3% 3% 21%;
+            overflow: hidden;
+            border-radius: 34px;
+            border: 1px solid rgba(255, 255, 255, .13);
+            background: #061020;
+            box-shadow: var(--shadow);
+            transform: rotate(2deg);
+            transition: .18s
+        }
+
+        .mentor-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 13%
+        }
+
+        .mentor-frame:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(2, 8, 18, .52), transparent 52%)
+        }
+
+        .product-float {
+            position: absolute;
+            z-index: 5;
+            left: -4%;
+            bottom: -1%;
+            width: 59%;
+            filter: drop-shadow(0 30px 48px rgba(0, 0, 0, .72));
+            animation: float 5.5s ease-in-out infinite
+        }
+
+        @keyframes float {
+            50% {
+                transform: translateY(-16px) rotate(-1deg)
+            }
+        }
+
+        .ring {
+            position: absolute;
+            left: -2%;
+            bottom: 2%;
+            width: 72%;
+            aspect-ratio: 1;
+            border: 1px solid rgba(33, 184, 255, .2);
+            border-radius: 50%;
+            box-shadow: 0 0 78px rgba(22, 119, 255, .15);
+            transform: rotateX(72deg)
+        }
+
+        .chip {
+            position: absolute;
+            z-index: 7;
+            padding: 11px 14px;
+            border: 1px solid rgba(33, 184, 255, .22);
+            border-radius: 14px;
+            background: rgba(3, 9, 20, .9);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, .46);
+            font-size: .8rem;
+            font-weight: 900
+        }
+
+        .chip b {
+            color: var(--yellow)
+        }
+
+        .c1 {
+            left: 0;
+            top: 10%
+        }
+
+        .c2 {
+            right: 0;
+            top: 26%
+        }
+
+        .c3 {
+            right: 0;
+            bottom: 11%
+        }
+
+        .ticker {
+            overflow: hidden;
+            border-block: 1px solid rgba(255, 255, 255, .07);
+            background: rgba(255, 255, 255, .022)
+        }
+
+        .track {
+            display: flex;
+            width: max-content;
+            padding: 19px 0;
+            animation: marquee 29s linear infinite;
+            color: #dce5f1;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            font-size: .78rem;
+            font-weight: 900
+        }
+
+        .track span {
+            margin: 0 28px
+        }
+
+        .track i {
+            color: var(--yellow);
+            font-style: normal
+        }
+
+        @keyframes marquee {
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        .heading {
+            max-width: 890px;
+            margin-bottom: 46px
+        }
+
+        .center {
+            text-align: center;
+            margin-inline: auto
+        }
+
+        .grid3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px
+        }
+
+        .card,
+        .problem,
+        .benefit,
+        .who {
+            padding: 26px;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, .052), rgba(255, 255, 255, .017)), var(--panel);
+            box-shadow: var(--shadow)
+        }
+
+        .problem,
+        .benefit,
+        .who {
+            transition: .24s
+        }
+
+        .problem:hover,
+        .benefit:hover,
+        .who:hover {
+            transform: translateY(-6px);
+            border-color: rgba(33, 184, 255, .24)
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 18px;
+            color: #071020;
+            background: linear-gradient(145deg, #fff18a, var(--yellow));
+            font-weight: 1000
+        }
+
+        .steps {
+            display: grid;
+            gap: 13px;
+            margin-top: 22px
+        }
+
+        .step {
+            display: flex;
+            gap: 14px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .035)
+        }
+
+        .step b {
+            flex: 0 0 32px;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            color: #071020;
+            background: var(--yellow)
+        }
+
+        .transform {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px
+        }
+
+        .transform article {
+            padding: 26px;
+            border-radius: 24px;
+            background: var(--panel);
+            box-shadow: var(--shadow)
+        }
+
+        .before {
+            border: 1px solid rgba(255, 82, 82, .2)
+        }
+
+        .after {
+            border: 1px solid rgba(53, 223, 119, .2)
+        }
+
+        .transform ul {
+            margin: 18px 0 0;
+            padding: 0;
+            display: grid;
+            gap: 11px
+        }
+
+        .transform li {
+            list-style: none;
+            position: relative;
+            padding: 11px 13px 11px 35px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .035);
+            color: #d7e2ee
+        }
+
+        .before li:before {
+            content: "×";
+            position: absolute;
+            left: 13px;
+            color: #ff7373;
+            font-weight: 1000
+        }
+
+        .after li:before {
+            content: "✓";
+            position: absolute;
+            left: 13px;
+            color: #45e486;
+            font-weight: 1000
+        }
+
+        .module-stage {
+            display: grid;
+            grid-template-columns: 370px 1fr;
+            gap: 24px;
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 30px;
+            background: #08152a;
+            box-shadow: var(--shadow)
+        }
+
+        .module-nav {
+            display: grid;
+            gap: 12px
+        }
+
+        .tab-btn {
+            width: 100%;
+            padding: 18px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: center;
+            text-align: left;
+            color: #fff;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, .03);
+            cursor: pointer;
+            transition: .25s
+        }
+
+        .tab-btn:hover {
+            transform: translateX(4px);
+            border-color: rgba(33, 184, 255, .24)
+        }
+
+        .tab-btn.active {
+            border-color: rgba(33, 184, 255, .32);
+            background: linear-gradient(135deg, rgba(22, 119, 255, .18), rgba(255, 211, 38, .08))
+        }
+
+        .tab-num {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(145deg, var(--blue), var(--cyan));
+            font-weight: 1000
+        }
+
+        .tab-title small {
+            display: block;
+            color: var(--yellow);
+            font-size: .72rem;
+            font-weight: 950;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .tab-title strong {
+            font-size: 1.08rem
+        }
+
+        .tab-title span {
+            display: block;
+            margin-top: 6px;
+            color: #a7b5c8;
+            font-size: .84rem
+        }
+
+        .module-panel {
+            min-height: 570px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            background: radial-gradient(circle at 84% 0, rgba(22, 119, 255, .14), transparent 18rem), var(--panel2)
+        }
+
+        .tab-pane {
+            display: none;
+            height: 100%;
+            padding: 30px;
+            animation: fade .32s
+        }
+
+        .tab-pane.active {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 24px;
+            align-items: center
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+        }
+
+        .tab-pane h3 {
+            font-size: 2rem;
+            line-height: 1
+        }
+
+        .bullets {
+            display: grid;
+            gap: 10px;
+            margin: 20px 0 0;
+            padding: 0
+        }
+
+        .bullets li {
+            list-style: none;
+            position: relative;
+            padding: 12px 14px 12px 36px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .04);
+            color: #d7e2ee
+        }
+
+        .bullets li:before {
+            content: "✓";
+            position: absolute;
+            left: 14px;
+            color: var(--yellow);
+            font-weight: 1000
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px
+        }
+
+        .tag {
+            padding: 9px 12px;
+            border: 1px solid rgba(33, 184, 255, .2);
+            border-radius: 999px;
+            background: rgba(22, 119, 255, .12);
+            color: #9bd4ff;
+            font-size: .82rem;
+            font-weight: 850
+        }
+
+        .preview {
+            position: relative
+        }
+
+        .preview img {
+            filter: drop-shadow(0 28px 48px rgba(0, 0, 0, .55))
+        }
+
+        .preview-badge {
+            position: absolute;
+            right: -2px;
+            bottom: 14px;
+            padding: 14px 16px;
+            border: 1px solid rgba(33, 184, 255, .2);
+            border-radius: 16px;
+            background: rgba(3, 9, 20, .86);
+            font-weight: 900
+        }
+
+        .preview-badge b {
+            display: block;
+            color: var(--yellow);
+            font-size: 1.28rem
+        }
+
+        .benefits,
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px
+        }
+
+        .bonus-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px
+        }
+
+        .bonus {
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background: #091428;
+            box-shadow: var(--shadow)
+        }
+
+        .bonus-stage {
+            min-height: 400px;
+            position: relative;
+            display: grid;
+            place-items: center;
+            margin-bottom: 22px;
+            border-radius: 22px;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 45%, rgba(22, 119, 255, .18), transparent 58%), #050b17
+        }
+
+        .phone {
+            width: 220px;
+            height: 390px;
+            padding: 12px;
+            border-radius: 38px;
+            background: linear-gradient(145deg, #2e3342, #080a10);
+            box-shadow: 0 22px 48px rgba(0, 0, 0, .55);
+            transform: rotate(-6deg)
+        }
+
+        .screen {
+            height: 100%;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #0d1b32
+        }
+
+        .chathead {
+            padding: 16px;
+            background: #229ed9;
+            font-weight: 900
+        }
+
+        .chatbody {
+            padding: 16px;
+            display: grid;
+            gap: 10px
+        }
+
+        .msg {
+            padding: 10px 12px;
+            border-radius: 13px;
+            background: #153153;
+            font-size: .8rem
+        }
+
+        .msg.alt {
+            margin-left: 24px;
+            background: #fff;
+            color: #1b2432
+        }
+
+        .zoom {
+            width: 88%;
+            max-width: 520px;
+            transform: rotate(1.7deg);
+            filter: drop-shadow(0 22px 40px rgba(0, 0, 0, .55))
+        }
+
+        .zoom-screen {
+            padding: 12px;
+            border-radius: 24px 24px 8px 8px;
+            background: linear-gradient(145deg, #343846, #090b10)
+        }
+
+        .zoom-inner {
+            padding: 14px;
+            border-radius: 14px;
+            background: #0d1730
+        }
+
+        .zoom-top {
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: #1d3d7a;
+            font-size: .84rem;
+            font-weight: 800
+        }
+
+        .people {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px
+        }
+
+        .person {
+            aspect-ratio: 1.35;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #3f568f, #2b1f56);
+            position: relative
+        }
+
+        .person:before {
+            content: "";
+            position: absolute;
+            width: 28%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #e9d8c6;
+            left: 36%;
+            top: 18%
+        }
+
+        .person:after {
+            content: "";
+            position: absolute;
+            width: 54%;
+            height: 30%;
+            border-radius: 50% 50% 10px 10px;
+            background: #e9d8c6;
+            left: 23%;
+            bottom: 12%
+        }
+
+        .zoom-base {
+            height: 68px;
+            border-radius: 0 0 28px 28px;
+            background: linear-gradient(#a5a8b2, #5d606a);
+            clip-path: polygon(3% 0, 97% 0, 100% 80%, 0 80%)
+        }
+
+        .mock {
+            position: absolute;
+            top: 24px;
+            right: 22px;
+            max-width: 240px;
+            padding: 16px;
+            border: 1px solid rgba(33, 184, 255, .2);
+            border-radius: 16px;
+            background: rgba(3, 9, 20, .82);
+            font-weight: 900
+        }
+
+        .mock b,
+        .bonus-tag {
+            color: var(--yellow)
+        }
+
+        .bonus-tag {
+            font-size: .78rem;
+            font-weight: 950;
+            letter-spacing: .11em;
+            text-transform: uppercase
+        }
+
+        .result-grid,
+        .mentor-grid,
+        .offer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center
+        }
+
+        .devices {
+            position: relative;
+            min-height: 580px;
+            display: grid;
+            place-items: center
+        }
+
+        .devices .laptop {
+            width: 108%;
+            filter: drop-shadow(0 34px 56px rgba(0, 0, 0, .68))
+        }
+
+        .devices .tablet {
+            position: absolute;
+            width: 43%;
+            right: -2%;
+            bottom: 1%;
+            filter: drop-shadow(0 25px 42px rgba(0, 0, 0, .64));
+            animation: float 5.8s ease-in-out infinite
+        }
+
+        .checklist {
+            display: grid;
+            gap: 12px;
+            margin: 26px 0
+        }
+
+        .check {
+            display: flex;
+            gap: 13px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, .075);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, .035)
+        }
+
+        .check i {
+            flex: 0 0 31px;
+            width: 31px;
+            height: 31px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            background: var(--yellow);
+            color: #071020;
+            font-style: normal;
+            font-weight: 1000
+        }
+
+        .mentor-grid {
+            grid-template-columns: .9fr 1.1fr
+        }
+
+        .media {
+            min-height: 650px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 30px;
+            background: #071124;
+            box-shadow: var(--shadow)
+        }
+
+        .media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top
+        }
+
+        .media:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(3, 8, 18, .44), transparent 52%)
+        }
+
+        .media-label {
+            position: absolute;
+            z-index: 3;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            padding: 14px 16px;
+            border: 1px solid rgba(33, 184, 255, .2);
+            border-radius: 16px;
+            background: rgba(3, 9, 20, .8);
+            font-weight: 850
+        }
+
+        .credentials {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 24px
+        }
+
+        .credential {
+            padding: 16px;
+            border: 1px solid rgba(33, 184, 255, .14);
+            border-radius: 15px;
+            background: rgba(22, 119, 255, .06)
+        }
+
+        .credential b {
+            display: block;
+            color: var(--yellow)
+        }
+
+        .offer {
+            padding: 110px 0;
+            background: radial-gradient(circle at 10% 50%, rgba(255, 211, 38, .07), transparent 23rem), radial-gradient(circle at 90% 20%, rgba(22, 119, 255, .1), transparent 22rem)
+        }
+
+        .ad {
+            overflow: hidden;
+            border: 1px solid rgba(33, 184, 255, .2);
+            border-radius: 28px;
+            box-shadow: var(--shadow)
+        }
+
+        .price-card {
+            padding: 40px;
+            border: 1px solid var(--line);
+            border-radius: 30px;
+            background: #08152a;
+            box-shadow: var(--shadow)
+        }
+
+        .old {
+            display: inline-block;
+            color: #b7c4d7;
+            text-decoration: line-through;
+            text-decoration-color: #ff4545;
+            text-decoration-thickness: 3px;
+            font-weight: 900
+        }
+
+        .price {
+            display: flex;
+            align-items: flex-start;
+            margin: 14px 0 18px;
+            color: var(--yellow);
+            font-weight: 1000;
+            line-height: .84
+        }
+
+        .price .cur {
+            font-size: 2rem;
+            margin-top: 10px
+        }
+
+        .price .amt {
+            font-size: clamp(4.8rem, 8vw, 7.2rem);
+            letter-spacing: -.08em
+        }
+
+        .price .usd {
+            align-self: flex-end;
+            margin: 0 0 10px 10px;
+            color: #fff
+        }
+
+        .faq {
+            max-width: 900px;
+            margin: auto
+        }
+
+        details {
+            margin-bottom: 12px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .03);
+            overflow: hidden
+        }
+
+        summary {
+            padding: 20px 22px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            font-weight: 850
+        }
+
+        summary::-webkit-details-marker {
+            display: none
+        }
+
+        summary:after {
+            content: "+";
+            color: var(--yellow);
+            font-size: 1.4rem
+        }
+
+        details[open] summary:after {
+            content: "−"
+        }
+
+        details p {
+            margin: 0;
+            padding: 0 22px 22px;
+            color: #a7b5c8
+        }
+
+        .final {
+            padding: 90px 0;
+            text-align: center
+        }
+
+        .final-card {
+            padding: 72px 28px;
+            border: 1px solid rgba(33, 184, 255, .16);
+            border-radius: 34px;
+            background: radial-gradient(circle at 50% 0, rgba(22, 119, 255, .18), transparent 50%), #071224;
+            box-shadow: var(--shadow)
+        }
+
+        .final-card h2 {
+            max-width: 900px;
+            margin-inline: auto
+        }
+
+        .final-card p {
+            max-width: 720px;
+            margin: 0 auto 28px
+        }
+
+        footer {
+            padding: 32px 0 105px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            color: #7d8b9e;
+            font-size: .84rem
+        }
+
+        .footerin {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap
+        }
+
+        .sticky {
+            position: fixed;
+            z-index: 70;
+            right: 20px;
+            bottom: 20px;
+            min-height: 58px;
+            padding: 0 22px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #071020;
+            text-decoration: none;
+            font-weight: 1000;
+            background: linear-gradient(135deg, #fff18a, var(--yellow), var(--orange));
+            box-shadow: 0 18px 52px rgba(0, 0, 0, .55);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .35s
+        }
+
+        .sticky.show {
+            transform: none;
+            opacity: 1
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(27px);
+            transition: .75s
+        }
+
+        .reveal.on {
+            opacity: 1;
+            transform: none
+        }
+
+        @media(max-width:1050px) {
+
+            .hero-grid,
+            .grid2,
+            .result-grid,
+            .mentor-grid,
+            .offer-grid {
+                grid-template-columns: 1fr
+            }
+
+            .module-stage {
+                grid-template-columns: 1fr
+            }
+
+            .grid3,
+            .benefits,
+            .who-grid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .hero-art {
+                min-height: 620px;
+                max-width: 720px;
+                width: 100%;
+                margin: auto
+            }
+        }
+
+        @media(max-width:760px) {
+            .section {
+                padding: 80px 0
+            }
+
+            .navlinks {
+                display: none;
+                position: absolute;
+                top: 77px;
+                left: 18px;
+                right: 18px;
+                padding: 12px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                border-radius: 18px;
+                background: rgba(2, 6, 17, .98);
+                border: 1px solid var(--line);
+                box-shadow: var(--shadow)
+            }
+
+            .navlinks.open {
+                display: flex
+            }
+
+            .navlinks a {
+                padding: 12px
+            }
+
+            .menu {
+                display: block
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: 58px
+            }
+
+            .hero-art {
+                min-height: 500px
+            }
+
+            .grid3,
+            .benefits,
+            .who-grid,
+            .transform {
+                grid-template-columns: 1fr
+            }
+
+            .tab-pane.active {
+                grid-template-columns: 1fr
+            }
+
+            .bonus-grid {
+                grid-template-columns: 1fr
+            }
+
+            .credentials {
+                grid-template-columns: 1fr
+            }
+
+            .sticky {
+                left: 10px;
+                right: 10px;
+                bottom: 10px
+            }
+
+            footer {
+                padding-bottom: 100px
+            }
+        }
+
+        @media(max-width:480px) {
+            .container {
+                width: calc(100% - 24px)
+            }
+
+            h1 {
+                font-size: clamp(2.9rem, 15vw, 5rem)
+            }
+
+            h2 {
+                font-size: clamp(2.1rem, 10vw, 3.5rem)
+            }
+
+            .actions {
+                flex-direction: column
+            }
+
+            .actions .btn {
+                width: 100%
+            }
+
+            .hero-art {
+                min-height: 410px
+            }
+
+            .mentor-frame {
+                inset: 3% 3% 3% 12%
+            }
+
+            .product-float {
+                width: 66%;
+                left: -4%
+            }
+
+            .chip {
+                font-size: .66rem;
+                padding: 8px 10px
+            }
+
+            .module-stage {
+                padding: 14px
+            }
+
+            .tab-btn {
+                padding: 15px
+            }
+
+            .tab-num {
+                width: 48px;
+                height: 48px
+            }
+
+            .mock {
+                display: none
+            }
+
+            .price-card {
+                padding: 28px 22px
+            }
+
+            .final-card {
+                padding: 52px 18px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="offerbar">OFERTA DE HOY · PRECIO NORMAL $47 USD · AHORA SOLO $14.99 USD</div>
+    <nav class="nav">
+        <div class="container navin"><a class="brand" href="#inicio"><span class="brandmark">SC</span><span>Sistema de
+                    <span class="gradient">Clientes</span><small>DIARIOS · META ADS + IA</small></span></a><button
+                class="menu" id="menu">☰</button>
+            <div class="navlinks" id="navlinks"><a href="#aprendes">Qué aprenderás</a><a href="#programa">Programa</a><a
+                    href="#bonos">Bonos</a><a href="#mentor">Productor</a><a class="btn primary small buy"
+                    href="https://pay.hotmart.com/R106697364K?off=7sh4dmd6&checkoutMode=10">Quiero entrar</a></div>
+        </div>
+    </nav>
+    <main>
+        <section class="hero" id="inicio">
+            <div class="container hero-grid">
+                <div class="reveal"><span class="eyebrow">Meta Ads + Inteligencia Artificial</span>
+                    <h1>Crea campañas que atraigan <span class="gradient">clientes potenciales</span> todos los días.
+                    </h1>
+                    <p class="lead">Sistema de Clientes Diarios te enseña paso a paso cómo investigar a tu cliente
+                        ideal, crear anuncios con Inteligencia Artificial y configurar campañas profesionales en
+                        Facebook e Instagram.</p>
+                    <div class="actions"><a class="btn primary buy"
+                            href="https://pay.hotmart.com/R106697364K?off=7sh4dmd6&checkoutMode=10">Acceder hoy por
+                            $14.99 USD
+                            →</a><a class="btn secondary" href="#programa">Ver el contenido</a></div>
+                    <div class="trust"><span>Método paso a paso</span><span>Ideal para principiantes</span><span>Acceso
+                            inmediato</span></div>
+                    <div class="price-mini"><strong>$14.99</strong><span>USD pago único<br><del>antes $47</del></span>
+                    </div>
+                </div>
+                <div class="hero-art reveal" id="tiltArea">
+                    <div class="ring"></div>
+                    <div class="mentor-frame" id="tiltCard"><img src="assets/mentor.webp" alt="Víctor Naranjo"></div>
+                    <img class="product-float" src="assets/box.webp" alt="Sistema de Clientes Diarios">
+                    <div class="chip c1"><b>Cliente ideal</b><br>con ChatGPT</div>
+                    <div class="chip c2"><b>Anuncios</b><br>con Inteligencia Artificial</div>
+                    <div class="chip c3"><b>Meta Ads</b><br>paso a paso</div>
+                </div>
+            </div>
+        </section>
+        <div class="ticker">
+            <div class="track"><span><i>✦</i> Investigación de mercado</span><span><i>✦</i> Cliente
+                    ideal</span><span><i>✦</i> ChatGPT</span><span><i>✦</i> Creativos con IA</span><span><i>✦</i> Copys
+                    publicitarios</span><span><i>✦</i> Meta Business</span><span><i>✦</i> Campañas
+                    rentables</span><span><i>✦</i> Optimización</span><span><i>✦</i> Investigación de
+                    mercado</span><span><i>✦</i> Cliente ideal</span><span><i>✦</i> ChatGPT</span><span><i>✦</i>
+                    Creativos con IA</span><span><i>✦</i> Copys publicitarios</span><span><i>✦</i> Meta
+                    Business</span><span><i>✦</i> Campañas rentables</span><span><i>✦</i> Optimización</span></div>
+        </div>
+        <section class="section">
+            <div class="container">
+                <div class="heading reveal"><span class="eyebrow">¿Por qué tus anuncios no funcionan?</span>
+                    <h2>El problema no siempre es el presupuesto. Muchas veces falta una estrategia clara para llegar a
+                        la <span class="gradient">persona correcta.</span></h2>
+                    <p class="lead">Este programa fue creado para ayudarte a dejar de improvisar y construir campañas
+                        con una metodología práctica.</p>
+                </div>
+                <div class="grid3">
+                    <article class="problem reveal">
+                        <div class="icon">01</div>
+                        <h3>No sabes configurar campañas</h3>
+                        <p>Aprenderás desde cero cómo preparar Facebook, Instagram y Meta Business.</p>
+                    </article>
+                    <article class="problem reveal">
+                        <div class="icon">02</div>
+                        <h3>No identificas a tu cliente ideal</h3>
+                        <p>Usarás ChatGPT para investigar problemas, deseos y motivaciones.</p>
+                    </article>
+                    <article class="problem reveal">
+                        <div class="icon">03</div>
+                        <h3>Tus anuncios no generan resultados</h3>
+                        <p>Aprenderás a crear imágenes y copys con mayor capacidad de captar atención.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section class="section-sm">
+            <div class="container">
+                <div class="heading center reveal"><span class="eyebrow">La transformación</span>
+                    <h2>Pasa de invertir sin rumbo a trabajar con un sistema de captación más <span
+                            class="gradient">claro y repetible.</span></h2>
+                </div>
+                <div class="transform">
+                    <article class="before reveal">
+                        <h3 style="color:#ff7373">Antes del programa</h3>
+                        <ul>
+                            <li>No sabes cómo conseguir clientes.</li>
+                            <li>Tus campañas no generan resultados.</li>
+                            <li>Improvisas sin una estrategia clara.</li>
+                            <li>Pierdes tiempo y dinero probando.</li>
+                        </ul>
+                    </article>
+                    <article class="after reveal">
+                        <h3 style="color:#45e486">Después del programa</h3>
+                        <ul>
+                            <li>Tendrás un sistema para atraer prospectos.</li>
+                            <li>Crearás campañas con mayor confianza.</li>
+                            <li>Comprenderás cómo optimizar anuncios.</li>
+                            <li>Contarás con una metodología repetible.</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section class="section-sm" id="aprendes">
+            <div class="container grid2">
+                <article class="card reveal">
+                    <h3>¿Qué aprenderás?</h3>
+                    <div class="steps">
+                        <div class="step"><b>1</b>
+                            <div><strong>Seleccionar productos con potencial</strong><br><span class="muted">Analiza
+                                    demanda y oportunidades.</span></div>
+                        </div>
+                        <div class="step"><b>2</b>
+                            <div><strong>Comprender a tu cliente ideal</strong><br><span class="muted">Investiga
+                                    problemas y deseos con ChatGPT.</span></div>
+                        </div>
+                        <div class="step"><b>3</b>
+                            <div><strong>Crear anuncios con IA</strong><br><span class="muted">Diseña imágenes y copys
+                                    que despierten interés.</span></div>
+                        </div>
+                        <div class="step"><b>4</b>
+                            <div><strong>Optimizar campañas</strong><br><span class="muted">Interpreta métricas y mejora
+                                    la inversión.</span></div>
+                        </div>
+                    </div>
+                </article>
+                <article class="card reveal">
+                    <h3>¿Qué lograrás?</h3>
+                    <div class="steps">
+                        <div class="step"><b>✓</b>
+                            <div><strong>Crear campañas desde cero</strong><br><span class="muted">Con una estructura
+                                    clara y profesional.</span></div>
+                        </div>
+                        <div class="step"><b>✓</b>
+                            <div><strong>Atraer clientes potenciales</strong><br><span class="muted">Con anuncios mejor
+                                    enfocados.</span></div>
+                        </div>
+                        <div class="step"><b>✓</b>
+                            <div><strong>Reducir errores publicitarios</strong><br><span class="muted">Evita decisiones
+                                    sin datos.</span></div>
+                        </div>
+                        <div class="step"><b>✓</b>
+                            <div><strong>Aplicarlo para terceros</strong><br><span class="muted">Úsalo en tu negocio o
+                                    como servicio.</span></div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section class="section" id="programa">
+            <div class="container">
+                <div class="heading center reveal"><span class="eyebrow">Contenido del programa</span>
+                    <h2>Domina las etapas necesarias para crear campañas con estrategia, datos e <span
+                            class="gradient">Inteligencia Artificial.</span></h2>
+                    <p class="lead center">El programa te guía desde la investigación de mercado hasta la optimización
+                        de campañas.</p>
+                </div>
+                <div class="module-stage reveal">
+                    <div class="module-nav"><button class="tab-btn active" data-tab="t1"><span
+                                class="tab-num">01</span><span class="tab-title"><small>Etapa 1</small><strong>Producto
+                                    y mercado</strong><span>Selecciona ofertas y analiza
+                                    demanda.</span></span></button><button class="tab-btn" data-tab="t2"><span
+                                class="tab-num">02</span><span class="tab-title"><small>Etapa 2</small><strong>Cliente
+                                    ideal con ChatGPT</strong><span>Investiga deseos y
+                                    problemas.</span></span></button><button class="tab-btn" data-tab="t3"><span
+                                class="tab-num">03</span><span class="tab-title"><small>Etapa 3</small><strong>Creativos
+                                    y copys con IA</strong><span>Crea anuncios de mayor
+                                    impacto.</span></span></button><button class="tab-btn" data-tab="t4"><span
+                                class="tab-num">04</span><span class="tab-title"><small>Etapa
+                                    4</small><strong>Configuración de Meta</strong><span>Prepara Facebook, Instagram y
+                                    Business.</span></span></button><button class="tab-btn" data-tab="t5"><span
+                                class="tab-num">05</span><span class="tab-title"><small>Etapa 5</small><strong>Campañas
+                                    y optimización</strong><span>Mide y mejora el rendimiento.</span></span></button>
+                    </div>
+                    <div class="module-panel">
+                        <div class="tab-pane active" id="t1">
+                            <div><span class="eyebrow">Base comercial</span>
+                                <h3>Selecciona productos con potencial antes de anunciar.</h3>
+                                <p>Aprenderás a evaluar oportunidades y construir una base más sólida antes de invertir.
+                                </p>
+                                <ul class="bullets">
+                                    <li>Selección de productos con potencial</li>
+                                    <li>Análisis de demanda</li>
+                                    <li>Identificación de oportunidades</li>
+                                    <li>Preparación de una oferta</li>
+                                </ul>
+                                <div class="tags"><span class="tag">Mercado</span><span class="tag">Demanda</span><span
+                                        class="tag">Oferta</span></div>
+                            </div>
+                            <div class="preview"><img src="assets/tablet.webp">
+                                <div class="preview-badge"><b>Base sólida</b> antes de invertir</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="t2">
+                            <div><span class="eyebrow">Investigación con IA</span>
+                                <h3>Comprende a tu cliente ideal utilizando ChatGPT.</h3>
+                                <p>Investiga quién es tu comprador, qué problemas enfrenta y qué desea lograr.</p>
+                                <ul class="bullets">
+                                    <li>Investigación de cliente ideal</li>
+                                    <li>Problemas y obstáculos</li>
+                                    <li>Deseos y motivaciones</li>
+                                    <li>Lenguaje que conecta</li>
+                                </ul>
+                                <div class="tags"><span class="tag">ChatGPT</span><span class="tag">Buyer
+                                        persona</span><span class="tag">Psicología</span></div>
+                            </div>
+                            <div class="preview"><img src="assets/laptop.webp">
+                                <div class="preview-badge"><b>Mejor enfoque</b> para tus anuncios</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="t3">
+                            <div><span class="eyebrow">Creatividad publicitaria</span>
+                                <h3>Crea imágenes y copys con Inteligencia Artificial.</h3>
+                                <p>Transforma la investigación en anuncios capaces de captar atención y comunicar
+                                    beneficios.</p>
+                                <ul class="bullets">
+                                    <li>Imágenes con IA</li>
+                                    <li>Copys publicitarios</li>
+                                    <li>Ganchos de atención</li>
+                                    <li>Mensajes orientados a conversión</li>
+                                </ul>
+                                <div class="tags"><span class="tag">Creativos</span><span
+                                        class="tag">Copywriting</span><span class="tag">IA</span></div>
+                            </div>
+                            <div class="preview"><img src="assets/box.webp">
+                                <div class="preview-badge"><b>Anuncios</b> con mayor impacto</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="t4">
+                            <div><span class="eyebrow">Preparación técnica</span>
+                                <h3>Configura correctamente el ecosistema de Meta.</h3>
+                                <p>Prepara las cuentas y herramientas necesarias para crear campañas profesionales.</p>
+                                <ul class="bullets">
+                                    <li>Configuración de Facebook</li>
+                                    <li>Configuración de Instagram</li>
+                                    <li>Preparación de Meta Business</li>
+                                    <li>Buenas prácticas antes de lanzar</li>
+                                </ul>
+                                <div class="tags"><span class="tag">Facebook</span><span
+                                        class="tag">Instagram</span><span class="tag">Meta Business</span></div>
+                            </div>
+                            <div class="preview"><img src="assets/laptop.webp">
+                                <div class="preview-badge"><b>Cuenta lista</b> para anunciar</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="t5">
+                            <div><span class="eyebrow">Resultados y mejora</span>
+                                <h3>Crea campañas, interpreta métricas y optimiza.</h3>
+                                <p>Usa los datos para tomar decisiones más inteligentes sobre tu inversión.</p>
+                                <ul class="bullets">
+                                    <li>Creación de campañas</li>
+                                    <li>Métricas importantes</li>
+                                    <li>Identificación de errores</li>
+                                    <li>Optimización de resultados</li>
+                                </ul>
+                                <div class="tags"><span class="tag">Meta Ads</span><span
+                                        class="tag">Métricas</span><span class="tag">Optimización</span></div>
+                            </div>
+                            <div class="preview"><img src="assets/tablet.webp">
+                                <div class="preview-badge"><b>Decisiones</b> basadas en datos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-sm">
+            <div class="container">
+                <div class="heading center reveal"><span class="eyebrow">Beneficios</span>
+                    <h2>Formación enfocada en conseguir clientes, no solo en aprender <span
+                            class="gradient">teoría.</span></h2>
+                </div>
+                <div class="benefits">
+                    <article class="benefit reveal">
+                        <div class="icon">01</div>
+                        <h3>Método práctico</h3>
+                        <p>Implementa cada etapa con una secuencia clara.</p>
+                    </article>
+                    <article class="benefit reveal">
+                        <div class="icon">02</div>
+                        <h3>Ideal para principiantes</h3>
+                        <p>No necesitas experiencia previa en Meta Ads.</p>
+                    </article>
+                    <article class="benefit reveal">
+                        <div class="icon">03</div>
+                        <h3>Inteligencia Artificial</h3>
+                        <p>Ahorra tiempo en investigación y creatividad.</p>
+                    </article>
+                    <article class="benefit reveal">
+                        <div class="icon">04</div>
+                        <h3>Enfoque en clientes</h3>
+                        <p>Aprende a atraer prospectos, no solo clics.</p>
+                    </article>
+                    <article class="benefit reveal">
+                        <div class="icon">05</div>
+                        <h3>Sistema repetible</h3>
+                        <p>Úsalo en distintas ofertas y proyectos.</p>
+                    </article>
+                    <article class="benefit reveal">
+                        <div class="icon">06</div>
+                        <h3>Acceso inmediato</h3>
+                        <p>Aprende desde computadora, tablet o celular.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="bonos">
+            <div class="container">
+                <div class="heading center reveal"><span class="eyebrow">Bonos incluidos</span>
+                    <h2>Recibe soporte y acompañamiento para implementar con mayor <span
+                            class="gradient">claridad.</span></h2>
+                </div>
+                <div class="bonus-grid">
+                    <article class="bonus reveal">
+                        <div class="bonus-stage">
+                            <div class="phone">
+                                <div class="screen">
+                                    <div class="chathead">Sistema de Clientes Diarios</div>
+                                    <div class="chatbody">
+                                        <div class="msg">Ya lancé mi primera campaña.</div>
+                                        <div class="msg alt">Excelente. Revisemos las métricas.</div>
+                                        <div class="msg">¿Cómo mejoro el anuncio?</div>
+                                        <div class="msg alt">Comparte el creativo y te orientamos.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mock"><b>BONO #1</b><br>Comunidad privada para soporte y avances.</div>
+                        </div>
+                        <div class="bonus-tag">Grupo Privado de Telegram</div>
+                        <h3>Soporte continuo dentro de la comunidad</h3>
+                        <p>Resuelve preguntas, comparte avances e interactúa con otros estudiantes.</p>
+                    </article>
+                    <article class="bonus reveal">
+                        <div class="bonus-stage">
+                            <div class="zoom">
+                                <div class="zoom-screen">
+                                    <div class="zoom-inner">
+                                        <div class="zoom-top">Mentoría · Sistema de Clientes Diarios</div>
+                                        <div class="people">
+                                            <div class="person"></div>
+                                            <div class="person"></div>
+                                            <div class="person"></div>
+                                            <div class="person"></div>
+                                            <div class="person"></div>
+                                            <div class="person"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="zoom-base"></div>
+                            </div>
+                            <div class="mock"><b>BONO #2</b><br>Acompañamiento para corregir errores.</div>
+                        </div>
+                        <div class="bonus-tag">Mentorías Incluidas</div>
+                        <h3>Recomendaciones para acelerar la implementación</h3>
+                        <p>Recibe orientación para ganar claridad y avanzar con mayor seguridad.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section class="section-sm">
+            <div class="container result-grid">
+                <div class="devices reveal"><img class="laptop" src="assets/laptop.webp"><img class="tablet"
+                        src="assets/tablet.webp"></div>
+                <div class="reveal"><span class="eyebrow">Un sistema aplicable</span>
+                    <h2>Construye una metodología de captación para tu negocio o como <span class="gradient">servicio
+                            profesional.</span></h2>
+                    <p class="lead">Al finalizar tendrás una base para investigar mercados, crear anuncios, configurar
+                        campañas y analizar resultados.</p>
+                    <div class="checklist">
+                        <div class="check"><i>✓</i>
+                            <div><strong>Campañas desde cero</strong><br><span class="muted">Con una estructura
+                                    clara.</span></div>
+                        </div>
+                        <div class="check"><i>✓</i>
+                            <div><strong>Anuncios mejor enfocados</strong><br><span class="muted">Basados en
+                                    investigación real.</span></div>
+                        </div>
+                        <div class="check"><i>✓</i>
+                            <div><strong>Mejor uso de la inversión</strong><br><span class="muted">Toma decisiones con
+                                    métricas.</span></div>
+                        </div>
+                        <div class="check"><i>✓</i>
+                            <div><strong>Sistema reutilizable</strong><br><span class="muted">Aplícalo en diferentes
+                                    ofertas.</span></div>
+                        </div>
+                    </div><a class="btn primary buy"
+                        href="https://pay.hotmart.com/R106697364K?off=7sh4dmd6&checkoutMode=10">Quiero
+                        aprender el sistema</a>
+                </div>
+            </div>
+        </section>
+        <section class="section-sm">
+            <div class="container">
+                <div class="heading center reveal"><span class="eyebrow">¿Para quién es?</span>
+                    <h2>Ideal para personas que quieren atraer clientes mediante publicidad digital y <span
+                            class="gradient">Meta Ads.</span></h2>
+                </div>
+                <div class="who-grid">
+                    <article class="who reveal">
+                        <h3>Emprendedores</h3>
+                        <p>Que necesitan atraer prospectos con mayor constancia.</p>
+                    </article>
+                    <article class="who reveal">
+                        <h3>Dueños de negocios</h3>
+                        <p>Que quieren depender menos de recomendaciones.</p>
+                    </article>
+                    <article class="who reveal">
+                        <h3>Afiliados digitales</h3>
+                        <p>Que desean promocionar productos con estrategia.</p>
+                    </article>
+                    <article class="who reveal">
+                        <h3>Freelancers</h3>
+                        <p>Que buscan ofrecer servicios publicitarios.</p>
+                    </article>
+                    <article class="who reveal">
+                        <h3>Community Managers</h3>
+                        <p>Que desean ampliar sus resultados con Meta Ads.</p>
+                    </article>
+                    <article class="who reveal">
+                        <h3>Principiantes</h3>
+                        <p>Que quieren comenzar con una ruta clara.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="mentor">
+            <div class="container mentor-grid">
+                <div class="media reveal"><img src="assets/mentor.webp">
+                    <div class="media-label"><b style="color:var(--yellow)">Víctor Naranjo</b><br>Especialista en
+                        marketing digital y publicidad online</div>
+                </div>
+                <div class="reveal"><span class="eyebrow">Sobre el productor</span>
+                    <h2>Aprende con un especialista con más de <span class="gradient">seis años de experiencia.</span>
+                    </h2>
+                    <p class="lead">Víctor Naranjo ha creado estrategias para la captación de clientes, ventas digitales
+                        y formación de emprendedores, ayudando a cientos de personas a implementar sistemas de marketing
+                        orientados a resultados.</p>
+                    <div class="credentials">
+                        <div class="credential"><b>6+ años</b><span class="muted">en marketing y publicidad
+                                online</span></div>
+                        <div class="credential"><b>Captación de clientes</b><span class="muted">estrategias orientadas a
+                                resultados</span></div>
+                        <div class="credential"><b>Formación práctica</b><span class="muted">explicada paso a
+                                paso</span></div>
+                        <div class="credential"><b>Implementación</b><span class="muted">metodologías enfocadas en
+                                acción</span></div>
+                    </div>
+                    <div style="margin-top:24px"><a class="btn primary buy"
+                            href="https://pay.hotmart.com/R106697364K?off=7sh4dmd6&checkoutMode=10">Entrar al
+                            programa</a></div>
+                </div>
+            </div>
+        </section>
+        <section class="offer" id="oferta">
+            <div class="container offer-grid">
+                <div class="ad reveal"><img src="assets/ad.webp"></div>
+                <div class="price-card reveal"><span class="eyebrow">Oferta de hoy</span>
+                    <h2 style="margin-top:18px">Deja de improvisar y crea campañas con una estrategia más <span
+                            class="gradient">clara.</span></h2>
+                    <p class="lead">Accede al programa completo, el grupo privado de Telegram y las mentorías incluidas
+                        por un único pago.</p><span class="old">Precio normal: $47 USD</span>
+                    <div class="price"><span class="cur">$</span><span class="amt">14.99</span><span
+                            class="usd">USD<br>pago único</span></div>
+                    <div class="checklist">
+                        <div class="check"><i>✓</i>
+                            <div><strong>Programa completo</strong><br><span class="muted">Meta Ads + IA paso a
+                                    paso.</span></div>
+                        </div>
+                        <div class="check"><i>✓</i>
+                            <div><strong>Grupo privado de Telegram</strong><br><span class="muted">Soporte y
+                                    comunidad.</span></div>
+                        </div>
+                        <div class="check"><i>✓</i>
+                            <div><strong>Mentorías incluidas</strong><br><span class="muted">Acompañamiento para
+                                    implementar.</span></div>
+                        </div>
+                        <div class="check"><i>✓</i>
+                            <div><strong>Acceso inmediato 24/7</strong><br><span class="muted">Desde cualquier
+                                    dispositivo.</span></div>
+                        </div>
+                    </div><a class="btn primary buy"
+                        href="https://pay.hotmart.com/R106697364K?off=7sh4dmd6&checkoutMode=10">Aprovechar la oferta
+                        →</a>
+                </div>
+            </div>
+        </section>
+        <section class="section-sm">
+            <div class="container">
+                <div class="heading center reveal"><span class="eyebrow">Preguntas frecuentes</span>
+                    <h2>Resuelve tus dudas antes de <span class="gradient">comenzar.</span></h2>
+                </div>
+                <div class="faq reveal">
+                    <details>
+                        <summary>¿Necesito experiencia previa?</summary>
+                        <p>No. El programa está diseñado para principiantes y explica el proceso paso a paso.</p>
+                    </details>
+                    <details>
+                        <summary>¿Se utiliza Inteligencia Artificial?</summary>
+                        <p>Sí. Aprenderás a usar ChatGPT y herramientas de IA para investigar clientes, crear imágenes y
+                            redactar copys.</p>
+                    </details>
+                    <details>
+                        <summary>¿Puedo aplicarlo a mi negocio?</summary>
+                        <p>Sí. También puedes desarrollar habilidades para trabajar campañas de terceros.</p>
+                    </details>
+                    <details>
+                        <summary>¿Incluye soporte?</summary>
+                        <p>Sí. Incluye grupo privado de Telegram y mentorías.</p>
+                    </details>
+                    <details>
+                        <summary>¿Puedo acceder desde celular?</summary>
+                        <p>Sí. El programa es 100% online y está disponible 24/7.</p>
+                    </details>
+                    <details>
+                        <summary>¿El precio es mensual?</summary>
+                        <p>No. La oferta es de $14.99 USD en un único pago.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+        <section class="final">
+            <div class="container">
+                <div class="final-card reveal"><span class="eyebrow">Empieza hoy</span>
+                    <h2>Construye un sistema para atraer clientes potenciales y dejar de depender únicamente de
+                        publicaciones <span class="gradient">orgánicas.</span></h2>
+                    <p class="lead">Aprende Meta Ads con Inteligencia Artificial y utiliza una metodología que puedas
+                        repetir.</p><a class="btn primary buy"
+                        href="https://pay.hotmart.com/R106697364K?off=7sh4dmd6&checkoutMode=10">Acceder ahora por $14.99
+                        USD</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container footerin">
+            <div>© 2026 Sistema de Clientes Diarios.</div>
+            <div>Los resultados dependen de la oferta, la inversión, la implementación y el mercado.</div>
+        </div>
+    </footer><a class="sticky buy" id="sticky"
+        href="https://pay.hotmart.com/R106697364K?off=7sh4dmd6&checkoutMode=10">Entrar ahora
+        · $14.99 →</a>
+    <script>
+        const PAY = 'https://pay.hotmart.com/R106697364K?off=7sh4dmd6&checkoutMode=10'; document.querySelectorAll('.buy').forEach(a => { a.href = PAY; a.target = '_blank'; a.rel = 'noopener noreferrer' }); const menu = document.getElementById('menu'), nav = document.getElementById('navlinks'); menu?.addEventListener('click', () => nav.classList.toggle('open')); nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open'))); const o = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); o.unobserve(e.target) } }), { threshold: .12 }); document.querySelectorAll('.reveal').forEach(e => o.observe(e)); const sticky = document.getElementById('sticky'); const us = () => sticky.classList.toggle('show', scrollY > 700); addEventListener('scroll', us, { passive: true }); us(); const area = document.getElementById('tiltArea'), card = document.getElementById('tiltCard'); if (area && card && matchMedia('(pointer:fine)').matches) { area.addEventListener('mousemove', e => { const r = area.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; card.style.transform = `rotateY(${x * 7}deg) rotateX(${-y * 6}deg) rotate(2deg)` }); area.addEventListener('mouseleave', () => card.style.transform = 'rotate(2deg)') } const buttons = [...document.querySelectorAll('.tab-btn')], panes = [...document.querySelectorAll('.tab-pane')]; buttons.forEach(b => b.addEventListener('click', () => { buttons.forEach(x => x.classList.remove('active')); panes.forEach(x => x.classList.remove('active')); b.classList.add('active'); document.getElementById(b.dataset.tab)?.classList.add('active') }));
+    </script>
+</body>
+
+</html>
